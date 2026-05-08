@@ -204,22 +204,21 @@ func (a *App) DeleteTodo(id uint) *struct {
 	}{Success: true, Message: "Todo deleted"}
 }
 
+type PurposeResponse struct {
+	Success  bool             `json:"Success"`
+	Purposes []models.Purpose `json:"Purposes"`
+}
+
 // Purpose APIs
-func (a *App) GetAllPurposes() *struct {
-	Success   bool
-	Purposes  []models.Purpose
-} {
+func (a *App) GetAllPurposes() *PurposeResponse {
 	purposes, err := a.purposeService.GetAllPurposes()
 	if err != nil {
-		return &struct {
-			Success   bool
-			Purposes  []models.Purpose
-		}{Success: false, Purposes: nil}
+		fmt.Println("[App] GetAllPurposes error:", err)
+		return &PurposeResponse{Success: false, Purposes: nil}
 	}
-	return &struct {
-		Success   bool
-		Purposes  []models.Purpose
-	}{Success: true, Purposes: purposes}
+	fmt.Printf("[App] GetAllPurposes success: %d purposes\n", len(purposes))
+	
+	return &PurposeResponse{Success: true, Purposes: purposes}
 }
 
 func (a *App) CreatePurpose(name, color, icon string) *struct {

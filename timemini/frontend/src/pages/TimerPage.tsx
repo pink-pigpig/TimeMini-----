@@ -179,9 +179,10 @@ export const TimerPage: React.FC<TimerPageProps> = ({
             <div className="setting-row">
               <span className="setting-label">用途</span>
               <Select
-                value={selectedPurpose}
+                value={purposes.length > 0 ? selectedPurpose : undefined}
                 onChange={setSelectedPurpose}
                 style={{ width: 200 }}
+                placeholder="请选择用途"
                 options={purposes.map((p) => ({
                   label: p.name,
                   value: p.id,

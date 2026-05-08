@@ -21,9 +21,13 @@ function App() {
   }, []);
 
   const loadPurposes = async () => {
-    const result = await WailsApp.GetAllPurposes();
-    if (result.success) {
-      setPurposes(result.purposes);
+    try {
+      const result = await WailsApp.GetAllPurposes();
+      if (result && result.Purposes) {
+        setPurposes(result.Purposes);
+      }
+    } catch (e) {
+      console.error('Error loading purposes:', e);
     }
   };
 
