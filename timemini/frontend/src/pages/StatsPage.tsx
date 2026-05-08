@@ -103,8 +103,6 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onGetStatistics }) => {
                   outerRadius={100}
                   paddingAngle={2}
                   dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={{ stroke: 'rgba(255,255,255,0.5)' }}
                 >
                   {purposeData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -112,7 +110,12 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onGetStatistics }) => {
                 </Pie>
                 <Tooltip
                   contentStyle={{ background: '#1a1a2e', border: 'none', borderRadius: 8 }}
-                  formatter={(value: number) => formatDuration(value)}
+                  formatter={(value: number, name: string, props: any) => [
+                    formatDuration(value),
+                    `${name} (${((props.payload.percent || 0) * 100).toFixed(1)}%)`
+                  ]}
+                  itemStyle={{ color: '#fff' }}
+                  labelStyle={{ color: '#fff' }}
                 />
               </PieChart>
             </ResponsiveContainer>

@@ -351,22 +351,4 @@ export namespace models {
 
 }
 
-export namespace struct { Success bool; Message string } {
-	
-	export class  {
-	    Success: boolean;
-	    Message: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new (source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Success = source["Success"];
-	        this.Message = source["Message"];
-	    }
-	}
-
-}
 
