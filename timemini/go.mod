@@ -4,8 +4,10 @@ go 1.23.0
 
 require (
 	github.com/wailsapp/wails/v2 v2.12.0
-	gorm.io/driver/sqlite v1.6.0
-	gorm.io/gorm v1.31.1
+	gorm.io/gorm v1.25.12
+	gorm.io/driver/sqlite v1.5.7
+	github.com/google/uuid v1.6.0
+	github.com/glebarez/sqlite v1.10.0
 )
 
 require (

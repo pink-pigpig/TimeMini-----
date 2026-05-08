@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"timemini/db"
 	"timemini/models"
 	"timemini/services"
@@ -29,9 +31,19 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	fmt.Println("[App] Starting TimeMini...")
 
+	// Try to initialize database with error logging
 	err := db.InitDatabase()
 	if err != nil {
-		fmt.Printf("[App] Database init failed: %v\n", err)
+		errMsg := fmt.Sprintf("[App] Database init failed: %v", err)
+		fmt.Println(errMsg)
+		// Try to write to a log file
+		if userDir, err := os.UserHomeDir(); err == nil {
+			logPath := filepath.Join(userDir, "timemini_error.log")
+			if f, err := os.Create(logPath); err == nil {
+				f.WriteString(errMsg)
+				f.Close()
+			}
+		}
 	} else {
 		fmt.Println("[App] Database initialized successfully")
 	}

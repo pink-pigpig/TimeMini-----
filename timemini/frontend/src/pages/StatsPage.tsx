@@ -125,7 +125,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onGetStatistics }) => {
                 <YAxis stroke="rgba(255,255,255,0.5)" />
                 <Tooltip
                   contentStyle={{ background: '#1a1a2e', border: 'none', borderRadius: 8 }}
-                  formatter={(value: number) => [`${value} 分钟`, '时长']}
+                  formatter={(value: any) => [`${value} 分钟`, '时长']}
                 />
                 <Bar dataKey="value" fill="#1890ff" radius={[4, 4, 0, 0]} />
               </BarChart>

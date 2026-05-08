@@ -3,9 +3,10 @@ package db
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"timemini/models"
 
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -17,15 +18,21 @@ func InitDatabase() error {
 		return err
 	}
 
-	dbDir := userDir + "/.timemini"
-	os.MkdirAll(dbDir, 0755)
-
-	dbPath := dbDir + "/timemini.db"
-
-	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+	dbDir := filepath.Join(userDir, ".timemini")
+	err = os.MkdirAll(dbDir, 0755)
 	if err != nil {
 		return err
 	}
+
+	dbPath := filepath.Join(dbDir, "timemini.db")
+	fmt.Println("[DB] Database path:", dbPath)
+
+	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+	if err != nil {
+		fmt.Println("[DB] Failed to open database:", err)
+		return err
+	}
+	fmt.Println("[DB] Database opened successfully")
 
 	err = DB.AutoMigrate(
 		&models.TimerRecord{},
