@@ -2,6 +2,8 @@ package services
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 	"timemini/models"
 )
@@ -41,10 +43,22 @@ func (s *StatisticsService) GetStatistics(period string) (*models.Statistics, er
 		end = start.Add(24 * time.Hour)
 	}
 
+	fmt.Printf("[Statistics] GetStatistics for period: %s, start: %v, end: %v\n", period, start, end)
+	
 	timerSvc := NewTimerService()
 	records, err := timerSvc.GetRecordsByDateRange(start, end)
 	if err != nil {
 		return nil, err
+	}
+
+	fmt.Printf("[Statistics] Found %d completed records\n", len(records))
+	
+	// Log to file
+	if userDir, _ := os.UserHomeDir(); userDir != "" {
+		if f, err := os.OpenFile(filepath.Join(userDir, ".timemini", "debug.log"), os.O_APPEND|os.O_CREATE, 0644); err == nil {
+			f.WriteString(fmt.Sprintf("[Statistics] Period: %s, Records: %d\n", period, len(records)))
+			f.Close()
+		}
 	}
 
 	stats := &models.Statistics{

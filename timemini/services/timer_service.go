@@ -1,6 +1,9 @@
 package services
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 	"timemini/db"
 	"timemini/models"
@@ -42,6 +45,7 @@ func (s *TimerService) StartTimer(req models.TimerRequest) (*models.TimerRecord,
 func (s *TimerService) StopTimer(id uint) (*models.TimerRecord, error) {
 	var record models.TimerRecord
 	if err := db.GetDB().First(&record, id).Error; err != nil {
+		fmt.Println("[TimerService] StopTimer - record not found, id:", id, "error:", err)
 		return nil, err
 	}
 
@@ -50,7 +54,18 @@ func (s *TimerService) StopTimer(id uint) (*models.TimerRecord, error) {
 	record.IsCompleted = true
 
 	if err := db.GetDB().Save(&record).Error; err != nil {
+		fmt.Println("[TimerService] StopTimer - save error:", err)
 		return nil, err
+	}
+	
+	fmt.Printf("[TimerService] StopTimer - id:%d completed, duration:%d, purpose:%s\n", record.ID, record.Duration, record.PurposeName)
+	
+	// Log to file
+	if userDir, _ := os.UserHomeDir(); userDir != "" {
+		if f, err := os.OpenFile(filepath.Join(userDir, ".timemini", "debug.log"), os.O_APPEND|os.O_CREATE, 0644); err == nil {
+			f.WriteString(fmt.Sprintf("[TimerService] StopTimer - id:%d completed\n", record.ID))
+			f.Close()
+		}
 	}
 
 	return &record, nil
