@@ -19,7 +19,7 @@ export function GetAllPurposes():Promise<main.PurposeResponse>;
 
 export function GetAllTodos():Promise<any>;
 
-export function GetStatistics(arg1:string):Promise<any>;
+export function GetStatistics(arg1:string):Promise<main.StatsResponse>;
 
 export function GetTodayRecords():Promise<any>;
 

@@ -98,26 +98,20 @@ func (a *App) GetTodayRecords() *struct {
 	}{Success: true, Records: records}
 }
 
+type StatsResponse struct {
+	Success   bool             `json:"Success"`
+	Stats     *models.Statistics `json:"Stats"`
+	Formatted string           `json:"Formatted"`
+}
+
 // Statistics APIs
-func (a *App) GetStatistics(period string) *struct {
-	Success    bool
-	Stats      *models.Statistics
-	Formatted  string
-} {
+func (a *App) GetStatistics(period string) *StatsResponse {
 	stats, err := a.statsService.GetStatistics(period)
 	if err != nil {
-		return &struct {
-			Success    bool
-			Stats      *models.Statistics
-			Formatted  string
-		}{Success: false, Stats: nil, Formatted: ""}
+		return &StatsResponse{Success: false, Stats: nil, Formatted: ""}
 	}
 	formatted := a.statsService.FormatDuration(stats.TotalDuration)
-	return &struct {
-		Success    bool
-		Stats      *models.Statistics
-		Formatted  string
-	}{Success: true, Stats: stats, Formatted: formatted}
+	return &StatsResponse{Success: true, Stats: stats, Formatted: formatted}
 }
 
 // Todo APIs

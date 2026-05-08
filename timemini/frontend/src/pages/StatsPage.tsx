@@ -21,9 +21,10 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onGetStatistics }) => {
 
   const loadStats = async () => {
     const result = await onGetStatistics(period);
-    if (result.success) {
-      setStats(result.stats);
-      setFormatted(result.formatted);
+    console.log('Stats result:', result);
+    if (result && result.Success) {
+      setStats(result.Stats);
+      setFormatted(result.Formatted);
     }
   };
 
