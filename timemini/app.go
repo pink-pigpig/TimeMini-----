@@ -123,38 +123,25 @@ func (a *App) CreateTodo(req models.TodoRequest) *models.TodoResponse {
 	return &models.TodoResponse{Success: true, Message: "Todo created", Todo: todo}
 }
 
-func (a *App) GetAllTodos() *struct {
-	Success bool
-	Todos   []models.Todo
-} {
-	todos, err := a.todoService.GetAllTodos()
-	if err != nil {
-		return &struct {
-			Success bool
-			Todos   []models.Todo
-		}{Success: false, Todos: nil}
-	}
-	return &struct {
-		Success bool
-		Todos   []models.Todo
-	}{Success: true, Todos: todos}
+type TodosResponse struct {
+	Success bool          `json:"Success"`
+	Todos   []models.Todo `json:"Todos"`
 }
 
-func (a *App) GetTodosByStatus(status string) *struct {
-	Success bool
-	Todos   []models.Todo
-} {
+func (a *App) GetAllTodos() *TodosResponse {
+	todos, err := a.todoService.GetAllTodos()
+	if err != nil {
+		return &TodosResponse{Success: false, Todos: nil}
+	}
+	return &TodosResponse{Success: true, Todos: todos}
+}
+
+func (a *App) GetTodosByStatus(status string) *TodosResponse {
 	todos, err := a.todoService.GetTodosByStatus(status)
 	if err != nil {
-		return &struct {
-			Success bool
-			Todos   []models.Todo
-		}{Success: false, Todos: nil}
+		return &TodosResponse{Success: false, Todos: nil}
 	}
-	return &struct {
-		Success bool
-		Todos   []models.Todo
-	}{Success: true, Todos: todos}
+	return &TodosResponse{Success: true, Todos: todos}
 }
 
 func (a *App) UpdateTodo(id uint, req models.TodoRequest) *models.TodoResponse {
@@ -181,21 +168,17 @@ func (a *App) StartTodo(id uint) *models.TodoResponse {
 	return &models.TodoResponse{Success: true, Message: "Todo started", Todo: todo}
 }
 
-func (a *App) DeleteTodo(id uint) *struct {
-	Success bool
-	Message string
-} {
+type DeleteResponse struct {
+	Success bool   `json:"Success"`
+	Message string `json:"Message"`
+}
+
+func (a *App) DeleteTodo(id uint) *DeleteResponse {
 	err := a.todoService.DeleteTodo(id)
 	if err != nil {
-		return &struct {
-			Success bool
-			Message string
-		}{Success: false, Message: err.Error()}
+		return &DeleteResponse{Success: false, Message: err.Error()}
 	}
-	return &struct {
-		Success bool
-		Message string
-	}{Success: true, Message: "Todo deleted"}
+	return &DeleteResponse{Success: true, Message: "Todo deleted"}
 }
 
 type PurposeResponse struct {

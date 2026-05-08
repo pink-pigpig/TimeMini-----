@@ -46,34 +46,34 @@ func (t *Todo) BeforeCreate(tx *gorm.DB) error {
 }
 
 type TimerRequest struct {
-	PurposeID   uint `json:"purpose_id"`
-	Duration    int  `json:"duration"` // seconds
-	IsLoop      bool `json:"is_loop"`
-	LoopCount   int  `json:"loop_count"`
+	PurposeID   uint `json:"PurposeID"`
+	Duration    int  `json:"Duration"` // seconds
+	IsLoop      bool `json:"IsLoop"`
+	LoopCount   int  `json:"LoopCount"`
 }
 
 type TimerResponse struct {
-	Success bool        `json:"success"`
-	Message string      `json:"message"`
-	Record  *TimerRecord `json:"record,omitempty"`
+	Success bool         `json:"Success"`
+	Message string      `json:"Message"`
+	Record  *TimerRecord `json:"Record,omitempty"`
 }
 
 type Statistics struct {
-	TotalDuration int                `json:"total_duration"` // seconds
-	PurposeStats  map[string]int     `json:"purpose_stats"`  // purpose_name -> seconds
-	DateStats     map[string]int     `json:"date_stats"`     // date -> seconds
-	Records       []TimerRecord      `json:"records"`
+	TotalDuration int                `json:"TotalDuration"` // seconds
+	PurposeStats  map[string]int     `json:"PurposeStats"`  // purpose_name -> seconds
+	DateStats     map[string]int     `json:"DateStats"`     // date -> seconds
+	Records       []TimerRecord      `json:"Records"`
 }
 
 type TodoRequest struct {
-	Title        string `json:"title"`
-	Description  string `json:"description"`
-	PurposeID    uint   `json:"purpose_id"`
-	TimerDuration int   `json:"timer_duration"`
+	Title        string `json:"Title"`
+	Description  string `json:"Description"`
+	PurposeID    uint   `json:"PurposeID"`
+	TimerDuration int   `json:"TimerDuration"`
 }
 
 type TodoResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-	Todo    *Todo  `json:"todo,omitempty"`
+	Success bool   `json:"Success"`
+	Message string `json:"Message"`
+	Todo    *Todo  `json:"Todo,omitempty"`
 }

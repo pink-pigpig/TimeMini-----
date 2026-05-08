@@ -1,5 +1,19 @@
 export namespace main {
 	
+	export class DeleteResponse {
+	    Success: boolean;
+	    Message: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DeleteResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Success = source["Success"];
+	        this.Message = source["Message"];
+	    }
+	}
 	export class PurposeResponse {
 	    Success: boolean;
 	    Purposes: models.Purpose[];
@@ -46,6 +60,38 @@ export namespace main {
 	        this.Success = source["Success"];
 	        this.Stats = this.convertValues(source["Stats"], models.Statistics);
 	        this.Formatted = source["Formatted"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class TodosResponse {
+	    Success: boolean;
+	    Todos: models.Todo[];
+	
+	    static createFrom(source: any = {}) {
+	        return new TodosResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Success = source["Success"];
+	        this.Todos = this.convertValues(source["Todos"], models.Todo);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -160,10 +206,10 @@ export namespace models {
 		}
 	}
 	export class Statistics {
-	    total_duration: number;
-	    purpose_stats: Record<string, number>;
-	    date_stats: Record<string, number>;
-	    records: TimerRecord[];
+	    TotalDuration: number;
+	    PurposeStats: Record<string, number>;
+	    DateStats: Record<string, number>;
+	    Records: TimerRecord[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Statistics(source);
@@ -171,10 +217,10 @@ export namespace models {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.total_duration = source["total_duration"];
-	        this.purpose_stats = source["purpose_stats"];
-	        this.date_stats = source["date_stats"];
-	        this.records = this.convertValues(source["records"], TimerRecord);
+	        this.TotalDuration = source["TotalDuration"];
+	        this.PurposeStats = source["PurposeStats"];
+	        this.DateStats = source["DateStats"];
+	        this.Records = this.convertValues(source["Records"], TimerRecord);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -197,10 +243,10 @@ export namespace models {
 	}
 	
 	export class TimerRequest {
-	    purpose_id: number;
-	    duration: number;
-	    is_loop: boolean;
-	    loop_count: number;
+	    PurposeID: number;
+	    Duration: number;
+	    IsLoop: boolean;
+	    LoopCount: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new TimerRequest(source);
@@ -208,16 +254,16 @@ export namespace models {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.purpose_id = source["purpose_id"];
-	        this.duration = source["duration"];
-	        this.is_loop = source["is_loop"];
-	        this.loop_count = source["loop_count"];
+	        this.PurposeID = source["PurposeID"];
+	        this.Duration = source["Duration"];
+	        this.IsLoop = source["IsLoop"];
+	        this.LoopCount = source["LoopCount"];
 	    }
 	}
 	export class TimerResponse {
-	    success: boolean;
-	    message: string;
-	    record?: TimerRecord;
+	    Success: boolean;
+	    Message: string;
+	    Record?: TimerRecord;
 	
 	    static createFrom(source: any = {}) {
 	        return new TimerResponse(source);
@@ -225,9 +271,9 @@ export namespace models {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.success = source["success"];
-	        this.message = source["message"];
-	        this.record = this.convertValues(source["record"], TimerRecord);
+	        this.Success = source["Success"];
+	        this.Message = source["Message"];
+	        this.Record = this.convertValues(source["Record"], TimerRecord);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -297,10 +343,10 @@ export namespace models {
 		}
 	}
 	export class TodoRequest {
-	    title: string;
-	    description: string;
-	    purpose_id: number;
-	    timer_duration: number;
+	    Title: string;
+	    Description: string;
+	    PurposeID: number;
+	    TimerDuration: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new TodoRequest(source);
@@ -308,16 +354,16 @@ export namespace models {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.title = source["title"];
-	        this.description = source["description"];
-	        this.purpose_id = source["purpose_id"];
-	        this.timer_duration = source["timer_duration"];
+	        this.Title = source["Title"];
+	        this.Description = source["Description"];
+	        this.PurposeID = source["PurposeID"];
+	        this.TimerDuration = source["TimerDuration"];
 	    }
 	}
 	export class TodoResponse {
-	    success: boolean;
-	    message: string;
-	    todo?: Todo;
+	    Success: boolean;
+	    Message: string;
+	    Todo?: Todo;
 	
 	    static createFrom(source: any = {}) {
 	        return new TodoResponse(source);
@@ -325,9 +371,9 @@ export namespace models {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.success = source["success"];
-	        this.message = source["message"];
-	        this.todo = this.convertValues(source["todo"], Todo);
+	        this.Success = source["Success"];
+	        this.Message = source["Message"];
+	        this.Todo = this.convertValues(source["Todo"], Todo);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -351,4 +397,22 @@ export namespace models {
 
 }
 
+export namespace struct { Success bool; Message string } {
+	
+	export class  {
+	    Success: boolean;
+	    Message: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new (source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Success = source["Success"];
+	        this.Message = source["Message"];
+	    }
+	}
+
+}
 

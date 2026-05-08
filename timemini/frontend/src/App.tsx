@@ -33,22 +33,22 @@ function App() {
 
   const loadActiveTimer = async () => {
     const result = await WailsApp.GetActiveTimer();
-    if (result.success && result.record) {
-      setActiveTimer(result.record);
+    if (result && result.Success && result.Record) {
+      setActiveTimer(result.Record);
     }
   };
 
   const handleStartTimer = async (req: TimerRequest) => {
     const result = await WailsApp.StartTimer(req);
-    if (result.success && result.record) {
-      setActiveTimer(result.record);
+    if (result && result.Success && result.Record) {
+      setActiveTimer(result.Record);
     }
     return result;
   };
 
   const handleStopTimer = async (id: number) => {
     const result = await WailsApp.StopTimer(id);
-    if (result.success) {
+    if (result && result.Success) {
       setActiveTimer(null);
     }
     return result;

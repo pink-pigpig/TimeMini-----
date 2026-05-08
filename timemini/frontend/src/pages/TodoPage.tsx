@@ -36,8 +36,9 @@ export const TodoPage: React.FC<TodoPageProps> = ({
   const loadTodos = async () => {
     setLoading(true);
     const result = await onGetTodos();
-    if (result.success) {
-      setTodos(result.todos);
+    console.log('Todos result:', result);
+    if (result && result.Success) {
+      setTodos(result.Todos || []);
     }
     setLoading(false);
   };
@@ -61,11 +62,11 @@ export const TodoPage: React.FC<TodoPageProps> = ({
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const req: TodoRequest = {
-      title: values.title,
-      description: values.description || '',
-      purpose_id: values.purpose_id || 1,
-      timer_duration: (values.timer_duration || 0) * 60,
+    const req: any = {
+      Title: values.title,
+      Description: values.description || '',
+      PurposeID: values.purpose_id || 1,
+      TimerDuration: (values.timer_duration || 0) * 60,
     };
 
     let result;
@@ -75,18 +76,18 @@ export const TodoPage: React.FC<TodoPageProps> = ({
       result = await onCreateTodo(req);
     }
 
-    if (result.success) {
+    if (result && result.Success) {
       message.success(editingTodo ? '更新成功' : '创建成功');
       setModalVisible(false);
       loadTodos();
     } else {
-      message.error(result.message);
+      message.error(result?.Message || '操作失败');
     }
   };
 
   const handleComplete = async (id: number) => {
     const result = await onCompleteTodo(id);
-    if (result.success) {
+    if (result && result.Success) {
       message.success('任务完成');
       loadTodos();
     }
@@ -94,7 +95,7 @@ export const TodoPage: React.FC<TodoPageProps> = ({
 
   const handleStart = async (id: number) => {
     const result = await onStartTodo(id);
-    if (result.success) {
+    if (result && result.Success) {
       message.success('开始任务');
       loadTodos();
     }
@@ -102,7 +103,7 @@ export const TodoPage: React.FC<TodoPageProps> = ({
 
   const handleDelete = async (id: number) => {
     const result = await onDeleteTodo(id);
-    if (result.success) {
+    if (result && result.Success) {
       message.success('删除成功');
       loadTodos();
     }

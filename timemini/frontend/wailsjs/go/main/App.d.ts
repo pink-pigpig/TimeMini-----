@@ -11,19 +11,19 @@ export function CreateTodo(arg1:models.TodoRequest):Promise<models.TodoResponse>
 
 export function DeletePurpose(arg1:number):Promise<any>;
 
-export function DeleteTodo(arg1:number):Promise<any>;
+export function DeleteTodo(arg1:number):Promise<main.DeleteResponse>;
 
 export function GetActiveTimer():Promise<models.TimerResponse>;
 
 export function GetAllPurposes():Promise<main.PurposeResponse>;
 
-export function GetAllTodos():Promise<any>;
+export function GetAllTodos():Promise<main.TodosResponse>;
 
 export function GetStatistics(arg1:string):Promise<main.StatsResponse>;
 
 export function GetTodayRecords():Promise<any>;
 
-export function GetTodosByStatus(arg1:string):Promise<any>;
+export function GetTodosByStatus(arg1:string):Promise<main.TodosResponse>;
 
 export function Greet(arg1:string):Promise<string>;
 
